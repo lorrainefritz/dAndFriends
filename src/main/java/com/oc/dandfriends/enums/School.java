@@ -1,0 +1,5 @@
+package com.oc.dandfriends.enums;
+
+public enum School {
+    ABJURATION, DIVINATION, ENCHANTEMENT, EVOCATION, ILLUSION, INVOCATION, NECROMANCIE, TRANSMUTATION;
+}
