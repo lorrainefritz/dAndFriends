@@ -1,8 +1,8 @@
 package com.oc.dandfriends.services;
 
-import com.oc.dandfriends.entities.AppUser;
-import com.oc.dandfriends.entities.Component;
-import com.oc.dandfriends.repositories.ComponentRepository;
+import com.oc.dandfriends.entities.ComponentOfSpell;
+import com.oc.dandfriends.exceptions.EntityNotFoundException;
+import com.oc.dandfriends.repositories.ComponentOfSpellRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,30 +15,31 @@ import java.util.List;
 @Service
 @Log4j2
 public class ComponentService {
-    private final ComponentRepository componentRepository;
+    private final ComponentOfSpellRepository componentOfSpellRepository;
 
 
-    public List<Component> findAllComponents(){
+    public List<ComponentOfSpell> findAllComponents(){
         log.info("in ComponentService in findAllComponents method");
-        return componentRepository.findAll();
+        return componentOfSpellRepository.findAll();
     }
 
-    public Component getAComponentById(Integer id) throws Exception {
+    public ComponentOfSpell findAComponentById(Integer id) throws Exception {
         log.info("in ComponentService in getAComponentById method");
         if (id==null){
             log.info("in ComponentService in getAComponentById method where id is null");
             throw new Exception("Invalid id");
         }
-        return componentRepository.getById(id);
+        return componentOfSpellRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("Component by id " +id+" was not found"));
     }
 
-    public Component saveAComponent(@Valid Component component) throws Exception{
+    public ComponentOfSpell saveAComponent(@Valid ComponentOfSpell componentOfSpell) throws Exception{
         log.info("in ComponentService in saveAComponent method");
-        if (component == null){
+        if (componentOfSpell == null){
             log.info("in ComponentService in saveAComponent method where component is null");
             throw new Exception("component can't be null");
         }
-        return componentRepository.save(component);
+        return componentOfSpellRepository.save(componentOfSpell);
     }
 
     public void deleteAComponentById(Integer id) throws Exception{
@@ -47,6 +48,20 @@ public class ComponentService {
             log.info("in ComponentService in deleteAComponentById method where id is null");
             throw new Exception("Invalid id");
         }
-        componentRepository.deleteById(id);
+        componentOfSpellRepository.deleteById(id);
+    }
+
+    public ComponentOfSpell findAComponentByName(String name) throws Exception {
+        log.info("in ComponentService in findAComponentByName method");
+        if (name == null){
+            log.info("in ComponentService in findAComponentByName method where name is null");
+            throw new Exception("name can't be null");
+        }
+        ComponentOfSpell componentOfSpell = componentOfSpellRepository.findByComponentName(name);
+        if (componentOfSpell == null){
+            log.info("in ComponentService in findAComponentByName method where componentOfSpell is null/notFound");
+            throw new Exception("componentOfSpellNotFound !");
+        }
+        return componentOfSpell;
     }
 }

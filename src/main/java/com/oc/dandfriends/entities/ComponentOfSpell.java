@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Table(name = "COMPONENT")
 @NoArgsConstructor
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @AllArgsConstructor
 @Entity
-public class Component {
+public class ComponentOfSpell {
     @Id
     @Column(name="COMPONENT_ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -22,9 +23,10 @@ public class Component {
 
     @Column(name="NAME")
     @NotBlank(message = "field can't be empty")
-    private String name;
+    private String componentName;
 
-    @Lob
-    @Column (name = "ICON", length= Integer.MAX_VALUE, nullable= true)
+    @Column (name = "ICON")
     private String icon;
+
+
 }

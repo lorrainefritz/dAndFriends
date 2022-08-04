@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -24,5 +25,6 @@ public class CharacterClass {
     @Column(name="name")
     @Size(max = 65,message = " 65 characters allowed")
     @NotBlank(message = "field can't be empty")
-    private String name;
+    private String characterClassName;
+
 }

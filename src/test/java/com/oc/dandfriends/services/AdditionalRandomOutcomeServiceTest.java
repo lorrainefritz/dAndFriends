@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -62,7 +61,7 @@ public class AdditionalRandomOutcomeServiceTest {
         when(additionalRandomOutcomeRepository.findAll()).thenReturn(randomOutcomesUnderTest);
         when(generateARandomUtil.generateARandom(randomOutcomesUnderTest.size())).thenReturn(5);
         //THEN
-        AdditionalRandomOutcome additionalRandomOutcomeUnderTest = additionalRandomOutcomeServiceUnderTest.getAnAdditionalRandomOutcome();
+        AdditionalRandomOutcome additionalRandomOutcomeUnderTest = additionalRandomOutcomeServiceUnderTest.generateAnAdditionalRandomOutcome();
         assertThat(additionalRandomOutcomeUnderTest.getDescription()).isEqualTo(additionalRandomOutcome6.getDescription());
 
     }

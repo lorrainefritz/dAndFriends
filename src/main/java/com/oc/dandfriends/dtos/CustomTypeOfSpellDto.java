@@ -16,6 +16,6 @@ import javax.validation.constraints.Size;
 public class CustomTypeOfSpellDto {
 
     private Integer id;
-    private String name;
+    private String customTypeOfSpellName;
     private String icon;
 }

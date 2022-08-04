@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CharacterClassDtoMapper {
     @Mapping(source = "characterClass.id",target = "id")
-    @Mapping(source = "characterClass.username",target = "name")
+    @Mapping(source = "characterClass.characterClassName",target = "characterClassName")
 
     CharacterClassDto characterClassToCharacterClassDto(CharacterClass characterClass);
     CharacterClass characterClassDtoToCharacterClass(CharacterClassDto characterClassDto);

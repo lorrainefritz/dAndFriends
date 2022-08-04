@@ -4,6 +4,7 @@ import com.oc.dandfriends.services.AppUserService;
 import com.oc.dandfriends.token.TokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -22,14 +24,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Log4j2
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder()
+    {
+        return new BCryptPasswordEncoder();
+    }
+
     private final UserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserService appUserService;
     private final TokenUtil tokenUtil;
+
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         log.info("in SpringSecurityConfig in configure (AuthenticationManagerBuilder)");
+        BCryptPasswordEncoder bCryptPasswordEncoder = bCryptPasswordEncoder();
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 

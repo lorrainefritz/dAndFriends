@@ -1,8 +1,7 @@
 package com.oc.dandfriends.services;
 
 import com.oc.dandfriends.entities.AdditionalRandomOutcome;
-import com.oc.dandfriends.entities.Role;
-import com.oc.dandfriends.entities.SpellCastingOutcome;
+import com.oc.dandfriends.exceptions.EntityNotFoundException;
 import com.oc.dandfriends.repositories.AdditionalRandomOutcomeRepository;
 import com.oc.dandfriends.util.GenerateARandomUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class AdditionalRandomOutcomeService {
     private final AdditionalRandomOutcomeRepository additionalRandomOutcomeRepository;
     private final GenerateARandomUtil generateARandomUtil;
 
-    public AdditionalRandomOutcome getAnAdditionalRandomOutcome() {
+    public AdditionalRandomOutcome generateAnAdditionalRandomOutcome() {
         log.info("in AdditionalRandomOutcomeService in generateAdditionalRandomOutcome method ");
         List<AdditionalRandomOutcome> additionalRandomOutcomes = additionalRandomOutcomeRepository.findAll();
         int randomlyGeneratedPositionInTheList = generateARandomUtil.generateARandom(additionalRandomOutcomes.size());
@@ -32,13 +31,14 @@ public class AdditionalRandomOutcomeService {
         return additionalRandomOutcomeRepository.findAll();
     }
 
-    public AdditionalRandomOutcome getAnAdditionalRandomOutcomeById(Integer id) throws Exception {
+    public AdditionalRandomOutcome findAnAdditionalRandomOutcomeById(Integer id) throws Exception {
         log.info("in AdditionalRandomOutcomeService in getAnAdditionalRandomOutcomeById method");
         if (id==null){
             log.info("in AdditionalRandomOutcomeService in getAnAdditionalRandomOutcomeById method where id is null");
             throw new Exception("Invalid id");
         }
-        return additionalRandomOutcomeRepository.getById(id);
+        return additionalRandomOutcomeRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("AdditionalRandomOutcome by id " +id+" was not found"));
     }
 
     public AdditionalRandomOutcome saveAnAdditionalRandomOutcome(@Valid AdditionalRandomOutcome additionalRandomOutcome) throws Exception{

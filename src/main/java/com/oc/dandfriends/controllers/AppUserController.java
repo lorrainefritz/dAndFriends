@@ -34,10 +34,10 @@ public class AppUserController {
             log.info("HTTP GET request received at /appUsers/get/id where id is null");
             return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity <>(appUserDtoMapper.appUserToAppUserDto(appUserService.getAnAppUserById(id)), HttpStatus.OK);
+        return new ResponseEntity <>(appUserDtoMapper.appUserToAppUserDto(appUserService.findAnAppUserById(id)), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/appUsers")
+    @PostMapping(value = "/appUsers/add")
     public ResponseEntity<AppUserDto> saveAnAppUser(@RequestBody @Validated AppUserDto appUserDto, BindingResult bindingResult) throws Exception {
         log.info("HTTP POST request received at /appUsers with saveAnAppUser");
         if (appUserDto == null) {

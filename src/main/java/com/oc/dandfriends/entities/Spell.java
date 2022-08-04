@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.oc.dandfriends.entities.ComponentOfSpell;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -41,10 +44,30 @@ public class Spell {
     @NotNull(message="Ce champ ne doit pas être vide")
     private int level;
 
-    @OneToMany
-    private List<Component> components;
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "spells_components_of_spells",
+            joinColumns = @JoinColumn(
+                    name = "SPELL_ID", referencedColumnName = "SPELL_ID"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "COMPONENT_ID", referencedColumnName = "COMPONENT_ID"
+            )
+    )
+    private List<ComponentOfSpell> componentOfSpells;
 
-    @OneToMany
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "spells_characterClasses",
+            joinColumns = @JoinColumn(
+                    name = "SPELL_ID", referencedColumnName = "SPELL_ID"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "CHARACTERCLASS_ID", referencedColumnName = "CHARACTERCLASS_ID"
+            )
+    )
     private List<CharacterClass> characterClasses;
 
     @Column(name="CASTING_TIME")
@@ -84,7 +107,7 @@ public class Spell {
     @NotBlank(message = "field can't be empty")
     private String fullDescription;
 
-    @Lob
-    @Column (name = "ICON", length= Integer.MAX_VALUE, nullable= true)
+
+    @Column (name = "ICON")
     private String icon;
 }

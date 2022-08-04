@@ -6,18 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class RoleDto {
-
+public class ComponentOfSpellDto {
     private Integer id;
-    private String roleName;
+    private String componentName;
+    private String icon;
 }

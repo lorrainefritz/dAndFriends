@@ -1,7 +1,7 @@
 package com.oc.dandfriends.services;
 
-import com.oc.dandfriends.entities.CustomTypeOfSpell;
 import com.oc.dandfriends.entities.Role;
+import com.oc.dandfriends.exceptions.EntityNotFoundException;
 import com.oc.dandfriends.repositories.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,13 +22,14 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public Role getARoleById(Integer id) throws Exception {
+    public Role findARoleById(Integer id) throws Exception {
         log.info("in RoleService in getARoleById method");
         if (id==null){
             log.info("in RoleService in getARoleById method where id is null");
             throw new Exception("Invalid id");
         }
-        return roleRepository.getById(id);
+        return roleRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("Role by id " +id+" was not found"));
     }
 
     public Role saveARole(@Valid Role role) throws Exception{
@@ -40,7 +41,7 @@ public class RoleService {
         return roleRepository.save(role);
     }
 
-    public void deleteARole(Integer id) throws Exception{
+    public void deleteARoleById(Integer id) throws Exception{
         log.info("in RoleService in deleteARoleById method");
         if (id==null){
             log.info("in RoleService in deleteARoleById method where id is null");

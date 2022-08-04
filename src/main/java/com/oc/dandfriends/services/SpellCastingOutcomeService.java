@@ -2,6 +2,7 @@ package com.oc.dandfriends.services;
 
 import com.oc.dandfriends.entities.Role;
 import com.oc.dandfriends.entities.SpellCastingOutcome;
+import com.oc.dandfriends.exceptions.EntityNotFoundException;
 import com.oc.dandfriends.repositories.SpellCastingOutcomeRepository;
 import com.oc.dandfriends.util.GenerateARandomUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +21,14 @@ public class SpellCastingOutcomeService {
     private final SpellCastingOutcomeRepository spellCastingOutcomeRepository;
     private final GenerateARandomUtil generateARandomUtil;
 
-    public SpellCastingOutcome getASpellCastingOutcomeById(Integer id) throws Exception {
+    public SpellCastingOutcome findASpellCastingOutcomeById(Integer id) throws Exception {
         log.info("in SpellCastingOutcomeService in getASpellCastingOutcomeById method");
         if (id == null) {
             log.info("n SpellCastingOutcomeService in getASpellCastingOutcomeById method\" where id is null");
             throw new Exception("Invalid Id");
         }
-        return spellCastingOutcomeRepository.getById(id);
+        return spellCastingOutcomeRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("SpellCastingOutcome by id " +id+" was not found"));
     }
 
     public List<SpellCastingOutcome> findAllSpellCastingOutcome(){
@@ -44,7 +46,7 @@ public class SpellCastingOutcomeService {
         return spellCastingOutcomeRepository.save(spellCastingOutcome);
     }
 
-    public void deleteASpellCastingOutcome(Integer id) throws Exception{
+    public void deleteASpellCastingOutcomeById(Integer id) throws Exception{
         log.info("in SpellCastingOutcomeService in deleteASpellCastingOutcomeById method");
         if (id==null){
             log.info("in SpellCastingOutcomeService in deleteASpellCastingOutcomeById method where id is null");

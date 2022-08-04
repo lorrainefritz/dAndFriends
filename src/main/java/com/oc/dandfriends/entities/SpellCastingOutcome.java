@@ -18,27 +18,26 @@ import javax.validation.constraints.Size;
 @Table(name = "SPELL_CASTING_OUTCOME")
 public class SpellCastingOutcome {
     @Id
-    @Column(name="SPELL_CASTING_OUTCOME_ID")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "SPELL_CASTING_OUTCOME_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="DESCRIPTION")
-    @Size(max = 250,message = " 250 characters allowed")
+    @Column(name = "DESCRIPTION")
+    @Size(max = 250, message = " 250 characters allowed")
     @NotBlank(message = "field can't be empty")
     private String description;
 
-    @Column(name="SPELL_WAS_A_SUCCESS")
+    @Column(name = "SPELL_WAS_A_SUCCESS")
     @NotNull
     private Boolean spellWasASuccess;
 
-    @Column(name="HAS_A_RANDOM_ADDITIONAL_EFFECT")
+    @Column(name = "HAS_A_RANDOM_ADDITIONAL_EFFECT")
     @NotNull
     private Boolean hasARandomAdditionalEffect;
 
-    @Lob
-    @Column (name = "ICON", length= Integer.MAX_VALUE, nullable= true)
-    private String icon;
 
+    @Column(name = "ICON")
+    private String icon;
 
 
 }

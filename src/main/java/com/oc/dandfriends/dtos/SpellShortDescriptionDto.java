@@ -5,16 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
-import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class ComponentDto {
+public class SpellShortDescriptionDto {
+
     private Integer id;
-    private String name;
+    private String title;
+    private String shortDescription;
     private String icon;
+
 }

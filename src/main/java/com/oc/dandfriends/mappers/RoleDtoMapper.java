@@ -10,8 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface RoleDtoMapper {
     @Mapping(source = "role.id",target = "id")
-    @Mapping(source = "role.name",target = "name")
+    @Mapping(source = "role.roleName",target = "roleName")
     RoleDto roleToRoleDto(Role role);
-    List<RoleDto> roleToAllRoleDto(List<Role> roles);
+    List<RoleDto> rolesToAllRolesDto(List<Role> roles);
+    List<Role> rolesDtoToAllRoles(List<RoleDto> rolesDto);
     Role roleDtoToRole(RoleDto roleDto);
 }

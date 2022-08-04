@@ -25,7 +25,7 @@ public class Role {
     @Column(name="NAME")
     @Size(max=65, message="65 charactères maximum")
     @NotBlank(message="Ce champ ne doit pas être vide")
-    private String name;
+    private String roleName;
 
     @OneToMany(mappedBy = "role")
     List<AppUser> appUsers;

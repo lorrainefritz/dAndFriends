@@ -1,8 +1,10 @@
 package com.oc.dandfriends.services;
 
+import com.oc.dandfriends.entities.CustomTypeOfSpell;
 import com.oc.dandfriends.entities.Role;
 import com.oc.dandfriends.entities.Spell;
 import com.oc.dandfriends.entities.SpellCastingOutcome;
+import com.oc.dandfriends.exceptions.EntityNotFoundException;
 import com.oc.dandfriends.repositories.SpellRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,7 +21,7 @@ import java.util.Random;
 public class SpellService {
     @Autowired
     private final SpellRepository spellRepository;
-    private  final SpellCastingOutcomeService spellCastingOutcomeService;
+    private final CustomTypeOfSpellService customTypeOfSpellService;
 
     public List<Spell> findAllSpells() {
         log.info("in SpellService in findAllSpells method");
@@ -35,13 +37,14 @@ public class SpellService {
         return spellRepository.findSpellsByCustomTypeOfSpell(id);
     }
 
-    public Spell getASpellById(Integer id) throws Exception {
+    public Spell findASpellById(Integer id) throws Exception {
         log.info("in SpellService in getASpellById method");
         if (id == null) {
             log.info("in SpellService in getASpellById method where id is null");
             throw new Exception("Invalid id");
         }
-        return spellRepository.getById(id);
+        return spellRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("Spell by id " +id+" was not found"));
     }
 
     public Spell saveASpell(@Valid Spell spell) throws Exception {
@@ -50,6 +53,8 @@ public class SpellService {
             log.info("in SpellService in saveASpell method where spell is null");
             throw new Exception("Spell can't be null");
         }
+      /* CustomTypeOfSpell customTypeOfSpell = customTypeOfSpellService.findACustomTypeOfSpellByName(spell.getCustomTypeOfSpell().getCustomTypeOfSpellName());
+        spell.setCustomTypeOfSpell(customTypeOfSpell);*/
         return spellRepository.save(spell);
     }
 

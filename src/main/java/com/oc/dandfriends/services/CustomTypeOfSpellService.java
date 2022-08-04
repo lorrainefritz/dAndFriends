@@ -1,7 +1,7 @@
 package com.oc.dandfriends.services;
 
-import com.oc.dandfriends.entities.Component;
 import com.oc.dandfriends.entities.CustomTypeOfSpell;
+import com.oc.dandfriends.exceptions.EntityNotFoundException;
 import com.oc.dandfriends.repositories.CustomTypeOfSpellRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,7 +15,6 @@ import java.util.List;
 @Service
 @Log4j2
 public class CustomTypeOfSpellService {
-    @Autowired
     private final CustomTypeOfSpellRepository customTypeOfSpellRepository;
 
     public List<CustomTypeOfSpell> findAllCustomTypeOfSpell(){
@@ -23,13 +22,14 @@ public class CustomTypeOfSpellService {
         return customTypeOfSpellRepository.findAll();
     }
 
-    public CustomTypeOfSpell getACustomTypeOfSpellById(Integer id) throws Exception {
+    public CustomTypeOfSpell findACustomTypeOfSpellById(Integer id) throws Exception {
         log.info("in CustomTypeOfSpellService in getACustomTypeOfSpellById method");
         if (id==null){
             log.info("in CustomTypeOfSpellService in getACustomTypeOfSpellById method where id is null");
             throw new Exception("Invalid id");
         }
-        return customTypeOfSpellRepository.getById(id);
+        return customTypeOfSpellRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("customTypeOfSpell by id " +id+" was not found"));
     }
 
     public CustomTypeOfSpell saveACustomTypeOfSpell(@Valid CustomTypeOfSpell customTypeOfSpell) throws Exception{
@@ -48,5 +48,19 @@ public class CustomTypeOfSpellService {
             throw new Exception("Invalid id");
         }
         customTypeOfSpellRepository.deleteById(id);
+    }
+
+    public CustomTypeOfSpell findACustomTypeOfSpellByName(String name) throws Exception {
+        log.info("in CustomTypeOfSpellService in findACustomTypeOfSpellByName method");
+        if (name == null){
+            log.info("in CustomTypeOfSpellService in findACustomTypeOfSpellByName method where name is null");
+            throw new Exception("name can't be null");
+        }
+        CustomTypeOfSpell customTypeOfSpell = customTypeOfSpellRepository.findByCustomTypeOfSpellName(name);
+        if (customTypeOfSpell == null){
+            log.info("in CustomTypeOfSpellService in findACustomTypeOfSpellByName method where customTypeOfSpell is null/notFound");
+            throw new Exception("customTypeOfSpellNotFound !");
+        }
+        return customTypeOfSpell;
     }
 }

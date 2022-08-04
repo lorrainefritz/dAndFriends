@@ -1,9 +1,7 @@
 package com.oc.dandfriends.controllers;
 
 import com.oc.dandfriends.dtos.AdditionalRandomOutcomeDto;
-import com.oc.dandfriends.entities.AdditionalRandomOutcome;
 import com.oc.dandfriends.mappers.AdditionalRandomOutcomeDtoMapper;
-import com.oc.dandfriends.repositories.AdditionalRandomOutcomeRepository;
 import com.oc.dandfriends.services.AdditionalRandomOutcomeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,10 +35,16 @@ public class AdditionalRandomOutcomeController {
             log.info("HTTP GET request received at /additionalRandomOutcomes/get/id where id is null");
             return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity <>(additionalRandomOutcomeDtoMapper.additionalRandomOutcomeToAdditionalRandomOutcomeDto(additionalRandomOutcomeService.getAnAdditionalRandomOutcomeById(id)), HttpStatus.OK);
+        return new ResponseEntity <>(additionalRandomOutcomeDtoMapper.additionalRandomOutcomeToAdditionalRandomOutcomeDto(additionalRandomOutcomeService.findAnAdditionalRandomOutcomeById(id)), HttpStatus.OK);
+    }
+    @GetMapping(value = "/spellCastingOutcomes/additionalRandomOutcomes/generate")
+    public ResponseEntity generataAnAdditionalOutcome() throws Exception {
+        log.info("HTTP GET request received at /additionalRandomOutcomes/generate");
+        return new ResponseEntity <>(additionalRandomOutcomeDtoMapper.additionalRandomOutcomeToAdditionalRandomOutcomeDto(additionalRandomOutcomeService.generateAnAdditionalRandomOutcome()), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/additionalRandomOutcomes")
+
+    @PostMapping(value = "/additionalRandomOutcomes/add")
     public ResponseEntity<AdditionalRandomOutcomeDto> saveAnAdditionalRandomOutcome(@RequestBody @Validated AdditionalRandomOutcomeDto additionalRandomOutcomeDto, BindingResult bindingResult) throws Exception {
         log.info("HTTP POST request received at /AdditionalRandomOutcomes with saveAnAdditionalRandomOutcome");
         if (additionalRandomOutcomeDto == null) {

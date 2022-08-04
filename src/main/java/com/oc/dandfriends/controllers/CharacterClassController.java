@@ -1,6 +1,5 @@
 package com.oc.dandfriends.controllers;
 
-import com.oc.dandfriends.dtos.AdditionalRandomOutcomeDto;
 import com.oc.dandfriends.dtos.CharacterClassDto;
 import com.oc.dandfriends.mappers.CharacterClassDtoMapper;
 import com.oc.dandfriends.services.CharacterClassService;
@@ -36,10 +35,10 @@ public class CharacterClassController {
             log.info("HTTP GET request received at /characterClasses/get/id where id is null");
             return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity <>(characterClassDtoMapper.characterClassToCharacterClassDto(characterClassService.getACharacterClassById(id)), HttpStatus.OK);
+        return new ResponseEntity <>(characterClassDtoMapper.characterClassToCharacterClassDto(characterClassService.findACharacterClassById(id)), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/CharacterClasses")
+    @PostMapping(value = "/characterClasses/add")
     public ResponseEntity<CharacterClassDto> saveACharacterClass(@RequestBody @Validated CharacterClassDto characterClassDto, BindingResult bindingResult) throws Exception {
         log.info("HTTP POST request received at /characterClasses with saveACharacterClass");
         if (characterClassDto == null) {
@@ -63,7 +62,7 @@ public class CharacterClassController {
             log.info("HTTP DELETE request received at /characterClasses/delete/id where id is null");
             return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
         }
-        characterClassService.deleteACharacterClass(id);
+        characterClassService.deleteACharacterClassById(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 

@@ -11,5 +11,5 @@ import lombok.Setter;
 @Setter
 public class CharacterClassDto {
     private Integer id;
-    private String name;
+    private String characterClassName;
 }

@@ -1,6 +1,7 @@
 package com.oc.dandfriends.services;
 
 import com.oc.dandfriends.entities.AppUser;
+import com.oc.dandfriends.exceptions.EntityNotFoundException;
 import com.oc.dandfriends.repositories.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,13 +28,14 @@ public class AppUserService implements UserDetailsService {
         return appUserRepository.findAll();
     }
 
-    public AppUser getAnAppUserById(Integer id) throws Exception {
+    public AppUser findAnAppUserById(Integer id) throws Exception {
         log.info("in AppUserService in getAAppUserById method");
         if (id==null){
             log.info("in AppUserService in getAAppUserById method where id is null");
             throw new Exception("Invalid id");
         }
-        return appUserRepository.getById(id);
+        return appUserRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("User by id " +id+" was not found"));
     }
 
     public AppUser saveAnAppUser(@Valid AppUser appUser) throws Exception{
@@ -66,7 +68,7 @@ public class AppUserService implements UserDetailsService {
             log.info("in UserService in loadUserByUsername method, appUser {} found ",username);
         }
         Collection<SimpleGrantedAuthority> authority = new ArrayList<>();
-        authority.add(new SimpleGrantedAuthority(appUser.getRole().getName()));
+        authority.add(new SimpleGrantedAuthority(appUser.getRole().getRoleName()));
         return new org.springframework.security.core.userdetails.User(appUser.getUsername(), appUser.getPassword(), authority);
 
     }

@@ -1,16 +1,10 @@
 package com.oc.dandfriends.dtos;
 
-import com.oc.dandfriends.entities.CharacterClass;
-import com.oc.dandfriends.entities.Component;
-import com.oc.dandfriends.entities.CustomTypeOfSpell;
-import com.oc.dandfriends.enums.School;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.util.List;
 
 @NoArgsConstructor
@@ -21,11 +15,11 @@ public class SpellFullDescriptionDto {
 
     private Integer id;
     private String title;
-    private String customTypeOfSpellDescription;
+    private String customTypeOfSpellName;
     private String school;
     private int level;
-    private List<String> componentsName;
-    private List<String> characterClassesName;
+    private List<String> componentsNames;
+    private List<String> characterClassesNames;
     private String castingTime;
     private String range;
     private String target;

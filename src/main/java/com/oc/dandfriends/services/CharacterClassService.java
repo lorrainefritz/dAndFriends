@@ -1,7 +1,7 @@
 package com.oc.dandfriends.services;
 
 import com.oc.dandfriends.entities.CharacterClass;
-import com.oc.dandfriends.entities.Role;
+import com.oc.dandfriends.exceptions.EntityNotFoundException;
 import com.oc.dandfriends.repositories.CharacterClassRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,13 +22,14 @@ public class CharacterClassService {
         return characterClassRepository.findAll();
     }
 
-    public CharacterClass getACharacterClassById(Integer id) throws Exception {
+    public CharacterClass findACharacterClassById(Integer id) throws Exception {
         log.info("in CharacterClassService in getACharacterClassById method");
         if (id==null){
             log.info("in CharacterClassService in getACharacterClassById method where id is null");
             throw new Exception("Invalid id");
         }
-        return characterClassRepository.getById(id);
+        return characterClassRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("CharacterClass by id " +id+" was not found"));
     }
 
     public CharacterClass saveACharacterClass(@Valid CharacterClass characterClass ) throws Exception{
@@ -40,7 +41,7 @@ public class CharacterClassService {
         return characterClassRepository.save(characterClass);
     }
 
-    public void deleteACharacterClass(Integer id) throws Exception{
+    public void deleteACharacterClassById(Integer id) throws Exception{
         log.info("in CharacterClassService in deleteACharacterClassById method");
         if (id==null){
             log.info("in CharacterClassService in deleteACharacterClassById method where id is null");
@@ -50,4 +51,17 @@ public class CharacterClassService {
     }
 
 
+    public CharacterClass findACharacterClassByName(String name) throws Exception {
+        log.info("in CharacterClassService in findACharacterClassByName method");
+        if (name == null){
+            log.info("in CharacterClassService in findACharacterClassByName method where name is null");
+            throw new Exception("name can't be null");
+        }
+          CharacterClass characterClass = characterClassRepository.findByCharacterClassName(name);
+        if (characterClass == null){
+            log.info("in CharacterClassService in findACharacterClassByName method where characterClass is null/notFound");
+            throw new Exception("characterClassNotFound !");
+        }
+        return characterClass;
+    }
 }

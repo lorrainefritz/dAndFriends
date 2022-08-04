@@ -26,8 +26,7 @@ public class AdditionalRandomOutcome {
     @NotBlank(message = "field can't be empty")
     private String description;
 
-    @Lob
-    @Column (name = "ICON", length= Integer.MAX_VALUE, nullable= true)
+    @Column (name = "ICON")
     private String icon;
 
 }
