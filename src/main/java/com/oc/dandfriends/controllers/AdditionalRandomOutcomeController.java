@@ -23,13 +23,13 @@ public class AdditionalRandomOutcomeController {
     private final AdditionalRandomOutcomeDtoMapper additionalRandomOutcomeDtoMapper;
 
     @GetMapping(value = "/additionalRandomOutcomes")
-    public ResponseEntity<List<AdditionalRandomOutcomeDto>> findAllAdditionalRandomOutcomes(){
+    public ResponseEntity<List<AdditionalRandomOutcomeDto>> findAllAdditionalRandomOutcomes(@CookieValue(value = "tokenDandFriends") String token){
         log.info("HTTP GET request received at /additionalRandomOutcomes with findAllAdditionalRandomOutcomes");
         return new ResponseEntity<>(additionalRandomOutcomeDtoMapper.additionalRandomOutcomesToAllAdditionalRandomOutcomesDto(additionalRandomOutcomeService.findAllAdditionalRandomOutcome()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/additionalRandomOutcomes/get/{id}")
-    public ResponseEntity getAnAdditionalRandomOutcomeById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity getAnAdditionalRandomOutcomeById(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP GET request received at /additionalRandomOutcomes/get/" + id + " with getAnAdditionalRandomOutcome");
         if (id == null) {
             log.info("HTTP GET request received at /additionalRandomOutcomes/get/id where id is null");
@@ -45,7 +45,7 @@ public class AdditionalRandomOutcomeController {
 
 
     @PostMapping(value = "/additionalRandomOutcomes/add")
-    public ResponseEntity<AdditionalRandomOutcomeDto> saveAnAdditionalRandomOutcome(@RequestBody @Validated AdditionalRandomOutcomeDto additionalRandomOutcomeDto, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<AdditionalRandomOutcomeDto> saveAnAdditionalRandomOutcome(@RequestBody @Validated AdditionalRandomOutcomeDto additionalRandomOutcomeDto, BindingResult bindingResult,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP POST request received at /AdditionalRandomOutcomes with saveAnAdditionalRandomOutcome");
         if (additionalRandomOutcomeDto == null) {
             log.info("HTTP POST request received at /AdditionalRandomOutcomes with saveAnAdditionalRandomOutcome where additionalRandomOutcomeDto is null");
@@ -62,7 +62,7 @@ public class AdditionalRandomOutcomeController {
     }
 
     @DeleteMapping(value = "/additionalRandomOutcomes/delete/{id}")
-    public ResponseEntity deleteAnAdditionalRandomOutcome(@PathVariable Integer id) throws Exception {
+    public ResponseEntity deleteAnAdditionalRandomOutcome(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP DELETE request received at /additionalRandomOutcomes/delete/" + id + " with deleteAnAdditionalRandomOutcome");
         if (id == null) {
             log.info("HTTP DELETE request received at /additionalRandomOutcomes/delete/id where id is null");

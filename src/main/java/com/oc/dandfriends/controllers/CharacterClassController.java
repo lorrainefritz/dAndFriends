@@ -23,13 +23,13 @@ public class CharacterClassController {
 
 
     @GetMapping(value = "/characterClasses")
-    public ResponseEntity<List<CharacterClassDto>> findAllCharacterClasses(){
+    public ResponseEntity<List<CharacterClassDto>> findAllCharacterClasses(@CookieValue(value = "tokenDandFriends") String token)throws Exception{
         log.info("HTTP GET request received at /characterClasses with findAllCharacterClasses");
         return new ResponseEntity<>(characterClassDtoMapper.characterClassesToAllCharacterClassesDto(characterClassService.findAllCharacterClasses()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/characterClasses/get/{id}")
-    public ResponseEntity getACharacterClassById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity getACharacterClassById(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP GET request received at /characterClasses/get/" + id + " with getCharacterClassById");
         if (id == null) {
             log.info("HTTP GET request received at /characterClasses/get/id where id is null");
@@ -39,7 +39,7 @@ public class CharacterClassController {
     }
 
     @PostMapping(value = "/characterClasses/add")
-    public ResponseEntity<CharacterClassDto> saveACharacterClass(@RequestBody @Validated CharacterClassDto characterClassDto, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<CharacterClassDto> saveACharacterClass(@RequestBody @Validated CharacterClassDto characterClassDto, BindingResult bindingResult,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP POST request received at /characterClasses with saveACharacterClass");
         if (characterClassDto == null) {
             log.info("HTTP POST request received at /characterClasses with saveACharacterClass where characterClassDto is null");
@@ -56,7 +56,7 @@ public class CharacterClassController {
     }
 
     @DeleteMapping(value = "/characterClasses/delete/{id}")
-    public ResponseEntity deleteACharacterClass(@PathVariable Integer id) throws Exception {
+    public ResponseEntity deleteACharacterClass(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP DELETE request received at /characterClasses/delete/" + id + " with deleteACharacterClass");
         if (id == null) {
             log.info("HTTP DELETE request received at /characterClasses/delete/id where id is null");

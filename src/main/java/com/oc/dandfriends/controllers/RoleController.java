@@ -22,13 +22,13 @@ public class RoleController {
     private final RoleDtoMapper roleDtoMapper;
 
     @GetMapping(value = "/roles")
-    public ResponseEntity<List<RoleDto>> findAllRoles(){
+    public ResponseEntity<List<RoleDto>> findAllRoles(@CookieValue(value = "tokenDandFriends") String token)throws Exception{
         log.info("HTTP GET request received at /roless with findAllRoles");
         return new ResponseEntity<>(roleDtoMapper.rolesToAllRolesDto(roleService.findAllRole()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/roles/get/{id}")
-    public ResponseEntity getARoleById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity getARoleById(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP GET request received at /roles/get/" + id + " with getRoleById");
         if (id == null) {
             log.info("HTTP GET request received at /roles/get/id where id is null");
@@ -38,7 +38,7 @@ public class RoleController {
     }
 
     @PostMapping(value = "/roles/add")
-    public ResponseEntity<RoleDto> addARole(@RequestBody @Validated RoleDto roleDto, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<RoleDto> addARole(@RequestBody @Validated RoleDto roleDto, BindingResult bindingResult,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP POST request received at /roles with saveARole");
         if (roleDto == null) {
             log.info("HTTP POST request received at /roles with saveARole where RoleDto is null");
@@ -54,28 +54,10 @@ public class RoleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(roleDto);
     }
 
-  /*  @PutMapping(value = "/roles/update")
-    public ResponseEntity<RoleDto> updateARole(@RequestBody @Validated RoleDto roleDto, BindingResult bindingResult) throws Exception {
-        log.info("HTTP POST request received at /roles with saveARole");
-        if (roleDto == null) {
-            log.info("HTTP POST request received at /roles with saveARole where RoleDto is null");
-            return new ResponseEntity<>(roleDto, HttpStatus.NO_CONTENT);
-        }
-        else if (bindingResult.hasErrors()){
-            log.info("HTTP POST request received at /roles with saveARole where roleDto is not valid");
-            return new ResponseEntity<>(roleDto, HttpStatus.FORBIDDEN);
-        }
-        else {
-            roleService.saveARole(roleDtoMapper.roleDtoToRole(roleDto));
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(roleDto);
-    }*/
-
-
 
 
     @DeleteMapping(value = "/roles/delete/{id}")
-    public ResponseEntity deleteARole(@PathVariable Integer id) throws Exception {
+    public ResponseEntity deleteARole(@PathVariable Integer id, @CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP DELETE request received at /roles/delete/" + id + " with deleteARole");
         if (id == null) {
             log.info("HTTP DELETE request received at /roles/delete/id where id is null");

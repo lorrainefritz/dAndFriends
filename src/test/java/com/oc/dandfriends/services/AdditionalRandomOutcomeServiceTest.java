@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,7 +40,7 @@ public class AdditionalRandomOutcomeServiceTest {
     }
 
     @Test
-    public void checkGetAnAdditionalRandomOutcome_shouldReturnARandomOutcome(){
+    public void checkGeneratetAnAdditionalRandomOutcome_shouldReturnARandomOutcome(){
         //GIVEN
         AdditionalRandomOutcome additionalRandomOutcome1 = new AdditionalRandomOutcome(1,"effet1",null);
         AdditionalRandomOutcome additionalRandomOutcome2 = new AdditionalRandomOutcome(2,"effet2",null);
@@ -63,7 +65,61 @@ public class AdditionalRandomOutcomeServiceTest {
         //THEN
         AdditionalRandomOutcome additionalRandomOutcomeUnderTest = additionalRandomOutcomeServiceUnderTest.generateAnAdditionalRandomOutcome();
         assertThat(additionalRandomOutcomeUnderTest.getDescription()).isEqualTo(additionalRandomOutcome6.getDescription());
-
     }
+
+    @Test
+    public void checkFindAllAdditionalRandomOutcomes_shouldCallAdditionalRandomOutcomeRepository() {
+        //GIVEN WHEN
+        additionalRandomOutcomeServiceUnderTest.findAllAdditionalRandomOutcome();
+        //THEN
+        verify(additionalRandomOutcomeRepository).findAll();
+    }
+
+
+
+    @Test
+    public void checkFindAnAdditionalRandomOutcomeById_WhenIdIsNull_shouldThrowAnException() throws Exception {
+        assertThatExceptionOfType(Exception.class).isThrownBy(() -> {
+            additionalRandomOutcomeServiceUnderTest.findAnAdditionalRandomOutcomeById(null);
+        }).withMessage("Invalid id");
+    }
+
+    @Test
+    public void checkSaveAnAdditionalRandomOutcome_WhenAdditionalRandomOutcomeIsValid_shouldCallAdditionalRandomOutcomeRepository() throws Exception {
+        //GIVEN WHEN
+
+        AdditionalRandomOutcome additionalRandomOutcome = new AdditionalRandomOutcome(1,"effet","123");
+        additionalRandomOutcomeServiceUnderTest.saveAnAdditionalRandomOutcome(additionalRandomOutcome);
+        //THEN
+        verify(additionalRandomOutcomeRepository).save(additionalRandomOutcome);
+    }
+
+    @Test
+    public void checkSaveAnAdditionalRandomOutcome_WhenAdditionalRandomOutcomeIsNull_shouldThrowAnException() throws Exception {
+        AdditionalRandomOutcome additionalRandomOutcome = null;
+        assertThatExceptionOfType(Exception.class).isThrownBy(() -> {
+            additionalRandomOutcomeServiceUnderTest.saveAnAdditionalRandomOutcome(additionalRandomOutcome);
+        }).withMessage("AdditionalRandomOutcome can't be null");
+    }
+
+    @Test
+    public void checkDeleteAAdditionalRandomOutcome_shouldCallAdditionalRandomOutcomeRepository() throws Exception {
+        //GIVEN WHEN
+        AdditionalRandomOutcome additionalRandomOutcome1 = new AdditionalRandomOutcome(1,"effet1",null);
+        additionalRandomOutcomeServiceUnderTest.deleteAnAdditionalRandomOutcome(additionalRandomOutcome1.getId());
+        //THEN
+        verify(additionalRandomOutcomeRepository).deleteById(1);
+    }
+
+    @Test
+    public void checkDeleteAnAdditionalRandomOutcome_WhenAdditionalRandomOutcomeIsNull_ShouldThrowAnException() throws Exception {
+        //GIVEN WHEN
+        AdditionalRandomOutcome additionalRandomOutcome1 = null;
+        assertThatExceptionOfType(Exception.class).isThrownBy(() -> {
+            additionalRandomOutcomeServiceUnderTest.deleteAnAdditionalRandomOutcome(null);
+        }).withMessage("Invalid id");
+    }
+
+
 
 }

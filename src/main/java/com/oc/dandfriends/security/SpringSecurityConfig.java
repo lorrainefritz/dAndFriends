@@ -25,8 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder()
-    {
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -54,10 +53,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         log.info("in SpringSecurityConfig in configure (HttpSecurity)");
         httpSecurity.csrf().disable();
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        httpSecurity.authorizeRequests().antMatchers("/resources/**","/static/**","/css/**","/images/**","/logos/**").permitAll();
-        httpSecurity.authorizeRequests().antMatchers("/login").permitAll();
-        httpSecurity.authorizeRequests().antMatchers("/books", "/books/search", "/libraries","/allBorrows").permitAll();
-        httpSecurity.authorizeRequests().antMatchers("/users/account","/users/account/borrows").authenticated();
-        httpSecurity.addFilterBefore(new CustomAuthenticationFilter(appUserService,tokenUtil), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.authorizeRequests().antMatchers("/resources/**", "/static/**", "/css/**", "/images/**", "/logos/**").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/home","/login").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/additionalRandomOutcomes","/additionalRandomOutcomes/**",
+                "/appUsers","/appUsers/**","/characterClasses","/characterClasses/**","/components","/components/**",
+                "/customTypeOfSpells","/customTypeOfSpells/**","/roles","/roles/**","/spellCastingOutcomes", "/spells").authenticated();
+        httpSecurity.addFilterBefore(new CustomAuthenticationFilter(appUserService, tokenUtil), UsernamePasswordAuthenticationFilter.class);
     }
 }

@@ -22,13 +22,13 @@ public class SpellCastingOutcomeController {
     private final SpellCastingOutcomeDtoMapper spellCastingOutcomeDtoMapper;
 
     @GetMapping(value = "/spellCastingOutcomes")
-    public ResponseEntity<List<SpellCastingOutcomeDto>> findAllSpellCastingOutcomes(){
+    public ResponseEntity<List<SpellCastingOutcomeDto>> findAllSpellCastingOutcomes(@CookieValue(value = "tokenDandFriends") String token)throws Exception{
         log.info("HTTP GET request received at /spellCastingOutcomes with findAllSpellCastingOutcomes");
         return new ResponseEntity<>(spellCastingOutcomeDtoMapper.spellCastingOutcomesToAllSpellCastingOutcomesDto(spellCastingOutcomeService.findAllSpellCastingOutcome()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/spellCastingOutcomes/get/{id}")
-    public ResponseEntity getASpellCastingOutcomeById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity getASpellCastingOutcomeById(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP GET request received at /spellCastingOutcomes/get/" + id + " with getSpellCastingOutcomeById");
         if (id == null) {
             log.info("HTTP GET request received at /spellCastingOutcomes/get/id where id is null");
@@ -37,7 +37,7 @@ public class SpellCastingOutcomeController {
         return new ResponseEntity <>(spellCastingOutcomeDtoMapper.spellCastingOutcomeToSpellCastingOutcomeDto(spellCastingOutcomeService.findASpellCastingOutcomeById(id)), HttpStatus.OK);
     }
     @GetMapping(value = "/spellCastingOutcomes/generate/{spellWasASuccess}")
-    public ResponseEntity generateASpellCastingOutcome(@PathVariable Boolean spellWasASuccess) throws Exception {
+    public ResponseEntity generateASpellCastingOutcome(@PathVariable Boolean spellWasASuccess,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP GET request received at /spellCastingOutcomes/generateASpellCastingOutcome/" + spellWasASuccess + " with generateSpellCastingOutcome");
         if (spellWasASuccess == null) {
             log.info("HTTP GET request received at /spellCastingOutcomes/generateASpellCastingOutcome/ where spellWasASuccess is null");
@@ -48,7 +48,7 @@ public class SpellCastingOutcomeController {
 
 
     @PostMapping(value = "/spellCastingOutcomes/add")
-    public ResponseEntity<SpellCastingOutcomeDto> saveASpellCastingOutcome(@RequestBody @Validated SpellCastingOutcomeDto spellCastingOutcomeDto, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<SpellCastingOutcomeDto> saveASpellCastingOutcome(@RequestBody @Validated SpellCastingOutcomeDto spellCastingOutcomeDto, BindingResult bindingResult,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP POST request received at /spellCastingOutcomes with saveASpellCastingOutcome");
         if (spellCastingOutcomeDto == null) {
             log.info("HTTP POST request received at /spellCastingOutcomes with saveASpellCastingOutcome where SpellCastingOutcomeDto is null");
@@ -65,7 +65,7 @@ public class SpellCastingOutcomeController {
     }
 
     @DeleteMapping(value = "/spellCastingOutcomes/delete/{id}")
-    public ResponseEntity deleteASpellCastingOutcome(@PathVariable Integer id) throws Exception {
+    public ResponseEntity deleteASpellCastingOutcome(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP DELETE request received at /spellCastingOutcomes/delete/" + id + " with deleteASpellCastingOutcome");
         if (id == null) {
             log.info("HTTP DELETE request received at /spellCastingOutcomes/delete/id where id is null");

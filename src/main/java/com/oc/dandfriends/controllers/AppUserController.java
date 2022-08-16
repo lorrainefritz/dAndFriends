@@ -2,6 +2,7 @@ package com.oc.dandfriends.controllers;
 
 import com.oc.dandfriends.dtos.AppUserDto;
 import com.oc.dandfriends.mappers.AppUserDtoMapper;
+import com.oc.dandfriends.security.UserAuthentication;
 import com.oc.dandfriends.services.AppUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,6 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -20,15 +24,16 @@ import java.util.List;
 public class AppUserController {
     private final AppUserService appUserService;
     private  final AppUserDtoMapper appUserDtoMapper;
+    private final UserAuthentication userAuthentication;
 
     @GetMapping(value = "/appUsers")
-    public ResponseEntity<List<AppUserDto>> findAllAppUsers(){
+    public ResponseEntity<List<AppUserDto>> findAllAppUsers(@CookieValue(value = "tokenDandFriends") String token) throws Exception{
         log.info("HTTP GET request received at /appUsers with findAllAppUsers");
         return new ResponseEntity<>(appUserDtoMapper.appUsersToAllAppUsersDto(appUserService.findAllAppUsers()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/appUsers/get/{id}")
-    public ResponseEntity getAnAppUserById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity getAnAppUserById(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP GET request received at /appUsers/get/" + id + " with getAnAppUserById");
         if (id == null) {
             log.info("HTTP GET request received at /appUsers/get/id where id is null");
@@ -38,7 +43,7 @@ public class AppUserController {
     }
 
     @PostMapping(value = "/appUsers/add")
-    public ResponseEntity<AppUserDto> saveAnAppUser(@RequestBody @Validated AppUserDto appUserDto, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<AppUserDto> saveAnAppUser(@RequestBody @Validated AppUserDto appUserDto, BindingResult bindingResult,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP POST request received at /appUsers with saveAnAppUser");
         if (appUserDto == null) {
             log.info("HTTP POST request received at /AdditionalRandomOutcomes with saveAnAdditionalRandomOutcome where additionalRandomOutcomeDto is null");
@@ -52,6 +57,13 @@ public class AppUserController {
             appUserService.saveAnAppUser(appUserDtoMapper.appUserDtoToAppUser(appUserDto));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(appUserDto);
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity authenticate(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) throws ServletException, IOException {
+        log.info("in UserController in AUTHENTICATE with username {}", username);
+        String token = userAuthentication.successfulAuthentication(username, password);
+        return new ResponseEntity(token, HttpStatus.OK);
     }
 
 }

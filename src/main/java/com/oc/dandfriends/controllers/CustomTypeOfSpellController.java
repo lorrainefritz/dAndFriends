@@ -23,13 +23,13 @@ public class CustomTypeOfSpellController {
     private final CustomTypeOfSpellDtoMapper customTypeOfSpellDtoMapper;
 
     @GetMapping(value = "/customTypeOfSpells")
-    public ResponseEntity<List<CustomTypeOfSpellDto>> findAllCustomTypeOfSpells(){
+    public ResponseEntity<List<CustomTypeOfSpellDto>> findAllCustomTypeOfSpells(@CookieValue(value = "tokenDandFriends") String token)throws Exception{
         log.info("HTTP GET request received at /customTypeOfSpells with findAllCustomTypeOfSpells");
         return new ResponseEntity<>(customTypeOfSpellDtoMapper.customTypesOfSpellToCustomTypesOfSpellDto(customTypeOfSpellService.findAllCustomTypeOfSpell()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/customTypeOfSpells/get/{id}")
-    public ResponseEntity getACustomTypeOfSpellById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity getACustomTypeOfSpellById(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP GET request received at /customTypeOfSpells/get/" + id + " with getCustomTypeOfSpellById");
         if (id == null) {
             log.info("HTTP GET request received at /customTypeOfSpells/get/id where id is null");
@@ -39,7 +39,7 @@ public class CustomTypeOfSpellController {
     }
 
     @PostMapping(value = "/customTypeOfSpells/add")
-    public ResponseEntity<CustomTypeOfSpellDto> saveACustomTypeOfSpell(@RequestBody @Validated CustomTypeOfSpellDto customTypeOfSpellDto, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<CustomTypeOfSpellDto> saveACustomTypeOfSpell(@RequestBody @Validated CustomTypeOfSpellDto customTypeOfSpellDto, BindingResult bindingResult,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP POST request received at /customTypeOfSpells with saveACustomTypeOfSpell");
         if (customTypeOfSpellDto == null) {
             log.info("HTTP POST request received at /customTypeOfSpells with saveACustomTypeOfSpell where customTypeOfSpellDto is null");
@@ -56,7 +56,7 @@ public class CustomTypeOfSpellController {
     }
 
     @DeleteMapping(value = "/customTypeOfSpells/delete/{id}")
-    public ResponseEntity deleteACustomTypeOfSpell(@PathVariable Integer id) throws Exception {
+    public ResponseEntity deleteACustomTypeOfSpell(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP DELETE request received at /customTypeOfSpells/delete/" + id + " with deleteACustomTypeOfSpell");
         if (id == null) {
             log.info("HTTP DELETE request received at /customTypeOfSpells/delete/id where id is null");

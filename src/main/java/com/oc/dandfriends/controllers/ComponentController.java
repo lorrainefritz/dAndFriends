@@ -22,13 +22,13 @@ private final ComponentService componentService;
 private final ComponentOfSpellDtoMapper componentOfSpellDtoMapper;
 
     @GetMapping(value = "/components")
-    public ResponseEntity<List<ComponentOfSpellDto>> findAllComponents(){
+    public ResponseEntity<List<ComponentOfSpellDto>> findAllComponents(@CookieValue(value = "tokenDandFriends") String token)throws Exception{
         log.info("HTTP GET request received at /components with findAllComponents");
         return new ResponseEntity<>(componentOfSpellDtoMapper.componentsOfSpellToComponentsOfSpellDto(componentService.findAllComponents()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/components/get/{id}")
-    public ResponseEntity getAComponentById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity getAComponentById(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP GET request received at /components/get/" + id + " with getComponentById");
         if (id == null) {
             log.info("HTTP GET request received at /components/get/id where id is null");
@@ -38,7 +38,7 @@ private final ComponentOfSpellDtoMapper componentOfSpellDtoMapper;
     }
 
     @PostMapping(value = "/components/add")
-    public ResponseEntity<ComponentOfSpellDto> saveAComponent(@RequestBody @Validated ComponentOfSpellDto componentOfSpellDto, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<ComponentOfSpellDto> saveAComponent(@RequestBody @Validated ComponentOfSpellDto componentOfSpellDto, BindingResult bindingResult,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP POST request received at /components with saveAComponent");
         if (componentOfSpellDto == null) {
             log.info("HTTP POST request received at /components with saveAComponent where componentDto is null");
@@ -55,7 +55,7 @@ private final ComponentOfSpellDtoMapper componentOfSpellDtoMapper;
     }
 
     @DeleteMapping(value = "/components/delete/{id}")
-    public ResponseEntity deleteAComponent(@PathVariable Integer id) throws Exception {
+    public ResponseEntity deleteAComponent(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP DELETE request received at /components/delete/" + id + " with deleteAComponent");
         if (id == null) {
             log.info("HTTP DELETE request received at /components/delete/id where id is null");

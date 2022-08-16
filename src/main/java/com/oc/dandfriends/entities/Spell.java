@@ -30,7 +30,7 @@ public class Spell {
     @NotBlank(message = "field can't be empty")
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(columnDefinition = "ID", nullable = false)
     private CustomTypeOfSpell customTypeOfSpell;
 
