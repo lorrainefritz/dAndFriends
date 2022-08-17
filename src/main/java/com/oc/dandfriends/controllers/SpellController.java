@@ -15,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,17 +37,16 @@ public class SpellController {
     private final TokenUtil tokenUtil;
 
 
-
     @GetMapping(value = "/spells")
-    public ResponseEntity<List<SpellFullDescriptionDto>> findAllSpells(@CookieValue(value = "tokenDandFriends") String token) throws Exception{
+    public ResponseEntity<List<SpellFullDescriptionDto>> findAllSpells(@CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP GET request received at /spells with findAllSpells");
         return new ResponseEntity<>(spellFullDescriptionDtoMapper.spellsToSpellsFullDescriptionDto(spellService.findAllSpells()), HttpStatus.OK);
     }
 
 
     @GetMapping(value = "/spells/byCustomTypeOfSpell/{customTypeOfSpellId}")
-    public ResponseEntity<List<SpellShortDescriptionDto>> findSpellsForCustomTypeOfSpell(@PathVariable  Integer customTypeOfSpellId,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
-        log.info("HTTP GET request received at spells/byCustomTypeOfSpell/{} with findSpellsForCustomTypeOfSpell",customTypeOfSpellId);
+    public ResponseEntity<List<SpellShortDescriptionDto>> findSpellsForCustomTypeOfSpell(@PathVariable Integer customTypeOfSpellId, @CookieValue(value = "tokenDandFriends") String token) throws Exception {
+        log.info("HTTP GET request received at spells/byCustomTypeOfSpell/{} with findSpellsForCustomTypeOfSpell", customTypeOfSpellId);
         return new ResponseEntity<>(spellShortDescriptionDtoMapper.spellsToSpellsShortDescriptionDto(spellService.findAllSpellsOfACustomTypeOfSpell(customTypeOfSpellId)), HttpStatus.OK);
     }
 
@@ -57,43 +57,9 @@ public class SpellController {
             log.info("HTTP GET request received at /spells/get/id where id is null");
             return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity <>(spellFullDescriptionDtoMapper.spellToSpellFullDescriptionDto(spellService.findASpellById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(spellFullDescriptionDtoMapper.spellToSpellFullDescriptionDto(spellService.findASpellById(id)), HttpStatus.OK);
     }
 
-   /* @PostMapping(value="/spells/edit")
-    public ResponseEntity<SpellFullDescriptionDto> editASpell(@CookieValue(value = "tokenDandFriends") String token,@RequestBody @Validated SpellFullDescriptionDto spellDto, BindingResult bindingResult) throws Exception {
-        log.info("HTTP PUT request received at /spells with editASpell");
-        if (spellDto == null) {
-            log.info("HTTP PUT request received at /spells with editASpell where SpellDto is null");
-            return new ResponseEntity<>(spellDto, HttpStatus.NO_CONTENT);
-        } else if (bindingResult.hasErrors()) {
-            log.info("HTTP PUT request received at /spells with editASpell where spellDto is not valid");
-            return new ResponseEntity<>(spellDto, HttpStatus.FORBIDDEN);
-        } else {
-            Spell spell = getAValidSpellFromDto(spellDto);
-            spellService.saveASpell(spell);
-            Spell spellToModify = spellService.findASpellById(spellDto.getId());
-            spellToModify.setTitle(spell.getTitle());
-            spellToModify.setCustomTypeOfSpell(spell.getCustomTypeOfSpell());
-            spellToModify.setSchool(spell.getSchool());
-            spellToModify.setLevel(spell.getLevel());
-            spellToModify.setComponentOfSpells(spell.getComponentOfSpells());
-            spellToModify.setCharacterClasses(spell.getCharacterClasses());
-            spellToModify.setCastingTime(spell.getCastingTime());
-            spellToModify.setRange(spell.getRange());
-            spellToModify.setTarget(spell.getTarget());
-            spellToModify.setDuration(spell.getDuration());
-            spellToModify.setSavingThrow(spell.getSavingThrow());
-            spellToModify.setSpellResistance(spell.isSpellResistance());
-            spellToModify.setShortDescription(spell.getShortDescription());
-            spellToModify.setFullDescription(spell.getFullDescription());
-
-            spellService.saveASpell(spellToModify);
-
-
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(spellDto);
-    }*/
 
     @PostMapping(value = "/spells/add")
     public ResponseEntity<SpellFullDescriptionDto> saveASpell(@RequestBody @Validated SpellFullDescriptionDto spellDto, BindingResult bindingResult) throws Exception {
@@ -101,12 +67,10 @@ public class SpellController {
         if (spellDto == null) {
             log.info("HTTP POST request received at /spells with saveASpell where SpellDto is null");
             return new ResponseEntity<>(spellDto, HttpStatus.NO_CONTENT);
-        }
-        else if (bindingResult.hasErrors()){
+        } else if (bindingResult.hasErrors()) {
             log.info("HTTP POST request received at /spells with saveASpell where spellDto is not valid");
             return new ResponseEntity<>(spellDto, HttpStatus.FORBIDDEN);
-        }
-        else {
+        } else {
             Spell spell = getAValidSpellFromDto(spellDto);
             spellService.saveASpell(spell);
         }
@@ -120,28 +84,36 @@ public class SpellController {
 
         List<ComponentOfSpell> componentOfSpellsList = new ArrayList<>();
         List<String> componentsNameFromDto = spellDto.getComponentsNames();
-        for (String componentName :componentsNameFromDto) {
-           ComponentOfSpell componentOfSpell = componentOfSpellService.findAComponentByName(componentName);
-           componentOfSpellsList.add(componentOfSpell);
+        for (String componentName : componentsNameFromDto) {
+            ComponentOfSpell componentOfSpell = componentOfSpellService.findAComponentByName(componentName);
+            componentOfSpellsList.add(componentOfSpell);
         }
         spell.setComponentOfSpells(componentOfSpellsList);
 
         List<CharacterClass> characterClassesList = new ArrayList<>();
         List<String> characterClassNameListFromDto = spellDto.getCharacterClassesNames();
-        for (String characterClassName :characterClassNameListFromDto) {
+        for (String characterClassName : characterClassNameListFromDto) {
             CharacterClass characterClass = characterClassService.findACharacterClassByName(characterClassName);
-           characterClassesList.add(characterClass);
+            characterClassesList.add(characterClass);
         }
         spell.setCharacterClasses(characterClassesList);
         return spell;
     }
 
+
     @DeleteMapping(value = "/spells/delete/{id}")
-    public ResponseEntity deleteASpellById(@PathVariable Integer id,@CookieValue(value = "tokenDandFriends") String token) throws Exception {
+    public ResponseEntity deleteASpellById(@PathVariable Integer id, @CookieValue(value = "tokenDandFriends") String token) throws Exception {
         log.info("HTTP DELETE request received at /spells/delete/" + id + " with deleteASpell");
         if (id == null) {
             log.info("HTTP DELETE request received at /spells/delete/id where id is null");
             return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
+        }
+        String username = tokenUtil.checkTokenAndRetrieveUsernameFromIt(token);
+        AppUser appUser = appUserService.findAnAppUserByName(username);
+        String role = appUser.getRole().getRoleName();
+        if (!role.equals("ROLE_MJ")) {
+            log.info("HTTP DELETE request received at /spells/delete/id where user has not role MJ" + appUser.getRole().getRoleName());
+            return new ResponseEntity<>(id, HttpStatus.FORBIDDEN);
         }
         spellService.deleteASpell(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();

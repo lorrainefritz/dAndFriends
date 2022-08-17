@@ -39,9 +39,7 @@ class CustomTypeOfSpellControllerTest {
     @MockBean
     private CustomTypeOfSpellService customTypeOfSpellService;
 
-    /**
-     * Method under test: {@link CustomTypeOfSpellController#deleteACustomTypeOfSpell(Integer, String)}
-     */
+
     @Test
     void testDeleteACustomTypeOfSpell() throws Exception {
         doNothing().when(this.customTypeOfSpellService).deleteACustomTypeOfSpellById((Integer) any());
@@ -53,9 +51,7 @@ class CustomTypeOfSpellControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link CustomTypeOfSpellController#saveACustomTypeOfSpell(CustomTypeOfSpellDto, org.springframework.validation.BindingResult, String)}
-     */
+
     @Test
     void testSaveACustomTypeOfSpell() throws Exception {
         CustomTypeOfSpell customTypeOfSpell = new CustomTypeOfSpell();
@@ -89,9 +85,7 @@ class CustomTypeOfSpellControllerTest {
                         .string("{\"id\":1,\"customTypeOfSpellName\":\"Custom Type Of Spell Name\",\"icon\":\"Icon\"}"));
     }
 
-    /**
-     * Method under test: {@link CustomTypeOfSpellController#deleteACustomTypeOfSpell(Integer, String)}
-     */
+
     @Test
     void testDeleteACustomTypeOfSpell2() throws Exception {
         doNothing().when(this.customTypeOfSpellService).deleteACustomTypeOfSpellById((Integer) any());
@@ -104,9 +98,7 @@ class CustomTypeOfSpellControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link CustomTypeOfSpellController#findAllCustomTypeOfSpells(String)}
-     */
+
     @Test
     void testFindAllCustomTypeOfSpells() throws Exception {
         when(this.customTypeOfSpellService.findAllCustomTypeOfSpell()).thenReturn(new ArrayList<>());
@@ -123,10 +115,8 @@ class CustomTypeOfSpellControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link CustomTypeOfSpellController#findAllCustomTypeOfSpells(String)}
-     */
-    @Test
+
+        @Test
     void testFindAllCustomTypeOfSpells2() throws Exception {
         when(this.customTypeOfSpellService.findAllCustomTypeOfSpell()).thenReturn(new ArrayList<>());
         when(this.customTypeOfSpellDtoMapper
@@ -143,9 +133,7 @@ class CustomTypeOfSpellControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link CustomTypeOfSpellController#getACustomTypeOfSpellById(Integer, String)}
-     */
+
     @Test
     void testGetACustomTypeOfSpellById() throws Exception {
         CustomTypeOfSpell customTypeOfSpell = new CustomTypeOfSpell();
@@ -166,9 +154,7 @@ class CustomTypeOfSpellControllerTest {
                         MockMvcResultMatchers.content().string("{\"id\":null,\"customTypeOfSpellName\":null,\"icon\":null}"));
     }
 
-    /**
-     * Method under test: {@link CustomTypeOfSpellController#getACustomTypeOfSpellById(Integer, String)}
-     */
+
     @Test
     void testGetACustomTypeOfSpellById2() throws Exception {
         CustomTypeOfSpell customTypeOfSpell = new CustomTypeOfSpell();

@@ -39,9 +39,7 @@ class ComponentControllerTest {
     @MockBean
     private ComponentService componentService;
 
-    /**
-     * Method under test: {@link ComponentController#deleteAComponent(Integer, String)}
-     */
+
     @Test
     void testDeleteAComponent() throws Exception {
         doNothing().when(this.componentService).deleteAComponentById((Integer) any());
@@ -53,9 +51,7 @@ class ComponentControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link ComponentController#findAllComponents(String)}
-     */
+
     @Test
     void testFindAllComponents() throws Exception {
         when(this.componentService.findAllComponents()).thenReturn(new ArrayList<>());
@@ -72,9 +68,7 @@ class ComponentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link ComponentController#findAllComponents(String)}
-     */
+
     @Test
     void testFindAllComponents2() throws Exception {
         when(this.componentService.findAllComponents()).thenReturn(new ArrayList<>());
@@ -92,9 +86,7 @@ class ComponentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link ComponentController#saveAComponent(ComponentOfSpellDto, org.springframework.validation.BindingResult, String)}
-     */
+
     @Test
     void testSaveAComponent() throws Exception {
         ComponentOfSpell componentOfSpell = new ComponentOfSpell();
@@ -128,9 +120,7 @@ class ComponentControllerTest {
                         .string("{\"id\":1,\"componentName\":\"Component Name\",\"icon\":\"Icon\"}"));
     }
 
-    /**
-     * Method under test: {@link ComponentController#deleteAComponent(Integer, String)}
-     */
+
     @Test
     void testDeleteAComponent2() throws Exception {
         doNothing().when(this.componentService).deleteAComponentById((Integer) any());
@@ -143,9 +133,7 @@ class ComponentControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link ComponentController#getAComponentById(Integer, String)}
-     */
+
     @Test
     void testGetAComponentById() throws Exception {
         ComponentOfSpell componentOfSpell = new ComponentOfSpell();
@@ -165,9 +153,7 @@ class ComponentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":null,\"componentName\":null,\"icon\":null}"));
     }
 
-    /**
-     * Method under test: {@link ComponentController#getAComponentById(Integer, String)}
-     */
+
     @Test
     void testGetAComponentById2() throws Exception {
         ComponentOfSpell componentOfSpell = new ComponentOfSpell();

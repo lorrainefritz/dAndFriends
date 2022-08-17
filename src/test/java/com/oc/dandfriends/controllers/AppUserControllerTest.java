@@ -47,17 +47,58 @@ class AppUserControllerTest {
     void testAuthenticate() throws Exception {
         when(this.userAuthentication.successfulAuthentication((String) any(), (String) any()))
                 .thenReturn("Successful Authentication");
+
+        Role role = new Role();
+        role.setAppUsers(new ArrayList<>());
+        role.setId(1);
+        role.setRoleName("Role Name");
+
+        AppUser appUser = new AppUser();
+        appUser.setId(1);
+        appUser.setPassword("iloveyou");
+        appUser.setPseudo("Pseudo");
+        appUser.setRole(role);
+        appUser.setUsername("janedoe");
+        when(this.appUserService.findAnAppUserByName((String) any())).thenReturn(appUser);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login")
-                .param("password", "123")
-                .param("username", "paul");
+                .param("password", "foo")
+                .param("username", "foo");
         MockMvcBuilders.standaloneSetup(this.appUserController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("Successful Authentication"));
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content().string("[\"Successful Authentication\",\"Role Name\",\"Pseudo\"]"));
     }
 
+
+    @Test
+    void testAuthenticate2() throws Exception {
+        when(this.userAuthentication.successfulAuthentication((String) any(), (String) any()))
+                .thenReturn("Successful Authentication");
+
+        Role role = new Role();
+        role.setAppUsers(new ArrayList<>());
+        role.setId(1);
+        role.setRoleName("Role Name");
+
+        AppUser appUser = new AppUser();
+        appUser.setId(1);
+        appUser.setPassword("iloveyou");
+        appUser.setPseudo("Pseudo");
+        appUser.setRole(role);
+        appUser.setUsername("janedoe");
+        when(this.appUserService.findAnAppUserByName((String) any())).thenReturn(appUser);
+        MockHttpServletRequestBuilder postResult = MockMvcRequestBuilders.post("/login");
+        postResult.contentType("https://example.org/example");
+        MockHttpServletRequestBuilder requestBuilder = postResult.param("password", "foo").param("username", "foo");
+        MockMvcBuilders.standaloneSetup(this.appUserController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content().string("[\"Successful Authentication\",\"Role Name\",\"Pseudo\"]"));
+    }
 
     @Test
     void testFindAllAppUsers() throws Exception {
@@ -141,22 +182,6 @@ class AppUserControllerTest {
                 .andExpect(MockMvcResultMatchers.content()
                         .string(
                                 "{\"id\":1,\"username\":\"janedoe\",\"pseudo\":\"Pseudo\",\"role\":{\"id\":1,\"roleName\":\"Role Name\",\"appUsers\":[]}}"));
-    }
-
-
-    @Test
-    void testAuthenticate2() throws Exception {
-        when(this.userAuthentication.successfulAuthentication((String) any(), (String) any()))
-                .thenReturn("Successful Authentication");
-        MockHttpServletRequestBuilder postResult = MockMvcRequestBuilders.post("/login");
-        postResult.contentType("https://example.org/example");
-        MockHttpServletRequestBuilder requestBuilder = postResult.param("password", "foo").param("username", "foo");
-        MockMvcBuilders.standaloneSetup(this.appUserController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("Successful Authentication"));
     }
 
 

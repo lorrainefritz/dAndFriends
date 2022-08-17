@@ -11,7 +11,9 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oc.dandfriends.dtos.SpellFullDescriptionDto;
+import com.oc.dandfriends.entities.AppUser;
 import com.oc.dandfriends.entities.CustomTypeOfSpell;
+import com.oc.dandfriends.entities.Role;
 import com.oc.dandfriends.entities.Spell;
 import com.oc.dandfriends.enums.School;
 import com.oc.dandfriends.mappers.SpellFullDescriptionDtoMapper;
@@ -84,6 +86,88 @@ class SpellControllerTest {
     private TokenUtil tokenUtil;
 
 
+
+    @Test
+    void testDeleteASpellById() throws Exception {
+        when(this.tokenUtil.checkTokenAndRetrieveUsernameFromIt((String) any())).thenReturn("janedoe");
+
+        Role role = new Role();
+        role.setAppUsers(new ArrayList<>());
+        role.setId(1);
+        role.setRoleName("Role Name");
+
+        AppUser appUser = new AppUser();
+        appUser.setId(1);
+        appUser.setPassword("iloveyou");
+        appUser.setPseudo("Pseudo");
+        appUser.setRole(role);
+        appUser.setUsername("janedoe");
+        when(this.appUserService.findAnAppUserByName((String) any())).thenReturn(appUser);
+        MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/spells/delete/{id}", 1);
+        MockHttpServletRequestBuilder requestBuilder = deleteResult.cookie(new Cookie("tokenDandFriends", "ABC123"));
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.spellController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isForbidden())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content().string("1"));
+    }
+
+
+    @Test
+    void testDeleteASpellById2() throws Exception {
+        when(this.tokenUtil.checkTokenAndRetrieveUsernameFromIt((String) any())).thenReturn("janedoe");
+        doNothing().when(this.spellService).deleteASpell((Integer) any());
+
+        Role role = new Role();
+        role.setAppUsers(new ArrayList<>());
+        role.setId(1);
+        role.setRoleName("ROLE_MJ");
+
+        AppUser appUser = new AppUser();
+        appUser.setId(1);
+        appUser.setPassword("iloveyou");
+        appUser.setPseudo("Pseudo");
+        appUser.setRole(role);
+        appUser.setUsername("janedoe");
+        when(this.appUserService.findAnAppUserByName((String) any())).thenReturn(appUser);
+        MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/spells/delete/{id}", 1);
+        MockHttpServletRequestBuilder requestBuilder = deleteResult.cookie(new Cookie("tokenDandFriends", "ABC123"));
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.spellController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
+    }
+
+    /**
+     * Method under test: {@link SpellController#deleteASpellById(Integer, String)}
+     */
+    @Test
+    void testDeleteASpellById3() throws Exception {
+        when(this.tokenUtil.checkTokenAndRetrieveUsernameFromIt((String) any())).thenReturn("janedoe");
+        doNothing().when(this.spellService).deleteASpell((Integer) any());
+
+        Role role = new Role();
+        role.setAppUsers(new ArrayList<>());
+        role.setId(1);
+        role.setRoleName("ROLE_MJ");
+
+        AppUser appUser = new AppUser();
+        appUser.setId(1);
+        appUser.setPassword("iloveyou");
+        appUser.setPseudo("Pseudo");
+        appUser.setRole(role);
+        appUser.setUsername("janedoe");
+        when(this.appUserService.findAnAppUserByName((String) any())).thenReturn(appUser);
+        MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/spells/delete/{id}", 1);
+        deleteResult.contentType("https://example.org/example");
+        MockHttpServletRequestBuilder requestBuilder = deleteResult.cookie(new Cookie("tokenDandFriends", "ABC123"));
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.spellController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
+    }
+
     @Test
     void testFindAllSpells() throws Exception {
         when(this.spellService.findAllSpells()).thenReturn(new ArrayList<>());
@@ -114,18 +198,6 @@ class SpellControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
-    }
-
-
-    @Test
-    void testDeleteASpellById() throws Exception {
-        doNothing().when(this.spellService).deleteASpell((Integer) any());
-        MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/spells/delete/{id}", 1);
-        MockHttpServletRequestBuilder requestBuilder = deleteResult.cookie(new Cookie("tokenDandFriends", "ABC123"));
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.spellController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
 
@@ -218,19 +290,6 @@ class SpellControllerTest {
                                         + ",\"componentsNames\":[],\"characterClassesNames\":[],\"castingTime\":\"Casting Time\",\"range\":\"Range\",\"target"
                                         + "\":\"Target\",\"duration\":\"Duration\",\"savingThrow\":\"Saving Throw\",\"spellResistance\":true,\"shortDescription"
                                         + "\":\"Short Description\",\"fullDescription\":\"Full Description\",\"icon\":\"Icon\"}"));
-    }
-
-
-    @Test
-    void testDeleteASpellById2() throws Exception {
-        doNothing().when(this.spellService).deleteASpell((Integer) any());
-        MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/spells/delete/{id}", 1);
-        deleteResult.contentType("https://example.org/example");
-        MockHttpServletRequestBuilder requestBuilder = deleteResult.cookie(new Cookie("tokenDandFriends", "ABC123"));
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.spellController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
 

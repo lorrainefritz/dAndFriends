@@ -13,11 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
@@ -90,7 +86,7 @@ class AppUserServiceTest {
         when(userRepository.findByUsername(username)).thenReturn(userUnderTest);
 
         //THEN
-        userServiceUndertest.findAnAppUserByUsername(username);
+        userServiceUndertest.findAnAppUserByName(username);
         verify(userRepository).findByUsername(username);
     }
 

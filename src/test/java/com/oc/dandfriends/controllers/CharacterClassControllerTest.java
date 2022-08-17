@@ -39,9 +39,7 @@ class CharacterClassControllerTest {
     @MockBean
     private CharacterClassService characterClassService;
 
-    /**
-     * Method under test: {@link CharacterClassController#deleteACharacterClass(Integer, String)}
-     */
+
     @Test
     void testDeleteACharacterClass() throws Exception {
         doNothing().when(this.characterClassService).deleteACharacterClassById((Integer) any());
@@ -53,9 +51,7 @@ class CharacterClassControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link CharacterClassController#findAllCharacterClasses(String)}
-     */
+
     @Test
     void testFindAllCharacterClasses() throws Exception {
         when(this.characterClassService.findAllCharacterClasses()).thenReturn(new ArrayList<>());
@@ -71,9 +67,7 @@ class CharacterClassControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link CharacterClassController#findAllCharacterClasses(String)}
-     */
+
     @Test
     void testFindAllCharacterClasses2() throws Exception {
         when(this.characterClassService.findAllCharacterClasses()).thenReturn(new ArrayList<>());
@@ -90,10 +84,7 @@ class CharacterClassControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link CharacterClassController#saveACharacterClass(CharacterClassDto, org.springframework.validation.BindingResult, String)}
-     */
-    @Test
+
     void testSaveACharacterClass() throws Exception {
         CharacterClass characterClass = new CharacterClass();
         characterClass.setCharacterClassName("Character Class Name");
@@ -123,9 +114,7 @@ class CharacterClassControllerTest {
                         MockMvcResultMatchers.content().string("{\"id\":1,\"characterClassName\":\"Character Class Name\"}"));
     }
 
-    /**
-     * Method under test: {@link CharacterClassController#deleteACharacterClass(Integer, String)}
-     */
+
     @Test
     void testDeleteACharacterClass2() throws Exception {
         doNothing().when(this.characterClassService).deleteACharacterClassById((Integer) any());
@@ -138,9 +127,7 @@ class CharacterClassControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link CharacterClassController#getACharacterClassById(Integer, String)}
-     */
+
     @Test
     void testGetACharacterClassById() throws Exception {
         CharacterClass characterClass = new CharacterClass();
@@ -159,9 +146,7 @@ class CharacterClassControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":null,\"characterClassName\":null}"));
     }
 
-    /**
-     * Method under test: {@link CharacterClassController#getACharacterClassById(Integer, String)}
-     */
+
     @Test
     void testGetACharacterClassById2() throws Exception {
         CharacterClass characterClass = new CharacterClass();

@@ -1,9 +1,11 @@
 package com.oc.dandfriends.controllers;
 
 import com.oc.dandfriends.dtos.AppUserDto;
+import com.oc.dandfriends.entities.AppUser;
 import com.oc.dandfriends.mappers.AppUserDtoMapper;
 import com.oc.dandfriends.security.UserAuthentication;
 import com.oc.dandfriends.services.AppUserService;
+import com.oc.dandfriends.token.TokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -60,10 +63,17 @@ public class AppUserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity authenticate(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) throws ServletException, IOException {
+    public ResponseEntity authenticate(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) throws Exception {
         log.info("in UserController in AUTHENTICATE with username {}", username);
+        AppUser appUser= appUserService.findAnAppUserByName(username);
+        log.info("in UserController in AUTHENTICATE where user pseudo is {}",appUser.getPseudo());
         String token = userAuthentication.successfulAuthentication(username, password);
-        return new ResponseEntity(token, HttpStatus.OK);
+        List<String> tokenToPass = new ArrayList<>();
+        tokenToPass.add(token);
+        tokenToPass.add(appUser.getRole().getRoleName());
+        tokenToPass.add(appUser.getPseudo());
+        return new ResponseEntity(tokenToPass, HttpStatus.OK);
     }
+
 
 }

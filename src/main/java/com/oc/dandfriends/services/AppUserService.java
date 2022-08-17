@@ -47,15 +47,16 @@ public class AppUserService implements UserDetailsService {
         return appUserRepository.save(appUser);
     }
 
-    public AppUser findAnAppUserByUsername(String username) throws UsernameNotFoundException {
+    public AppUser findAnAppUserByName(String name) throws Exception {
         log.info("in AppUserService in findAUserByUsername method ");
-        AppUser user = appUserRepository.findByUsername(username);
+        AppUser user = appUserRepository.findByUsername(name);
         if (user == null) {
             log.info("in AppUserService in finAUserByUsername method where username is null");
             throw new UsernameNotFoundException("Invalid email or Password");
         }
         return user;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

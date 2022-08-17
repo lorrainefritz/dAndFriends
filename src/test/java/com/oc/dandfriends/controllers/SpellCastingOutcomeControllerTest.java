@@ -39,9 +39,7 @@ class SpellCastingOutcomeControllerTest {
     @MockBean
     private SpellCastingOutcomeService spellCastingOutcomeService;
 
-    /**
-     * Method under test: {@link SpellCastingOutcomeController#deleteASpellCastingOutcome(Integer, String)}
-     */
+
     @Test
     void testDeleteASpellCastingOutcome() throws Exception {
         doNothing().when(this.spellCastingOutcomeService).deleteASpellCastingOutcomeById((Integer) any());
@@ -53,9 +51,7 @@ class SpellCastingOutcomeControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link SpellCastingOutcomeController#saveASpellCastingOutcome(SpellCastingOutcomeDto, org.springframework.validation.BindingResult, String)}
-     */
+
     @Test
     void testSaveASpellCastingOutcome() throws Exception {
         SpellCastingOutcome spellCastingOutcome = new SpellCastingOutcome();
@@ -98,9 +94,7 @@ class SpellCastingOutcomeControllerTest {
                                         + "\"hasARandomAdditionalEffect\":true,\"icon\":\"Icon\"}"));
     }
 
-    /**
-     * Method under test: {@link SpellCastingOutcomeController#deleteASpellCastingOutcome(Integer, String)}
-     */
+
     @Test
     void testDeleteASpellCastingOutcome2() throws Exception {
         doNothing().when(this.spellCastingOutcomeService).deleteASpellCastingOutcomeById((Integer) any());
@@ -113,9 +107,7 @@ class SpellCastingOutcomeControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link SpellCastingOutcomeController#findAllSpellCastingOutcomes(String)}
-     */
+
     @Test
     void testFindAllSpellCastingOutcomes() throws Exception {
         when(this.spellCastingOutcomeService.findAllSpellCastingOutcome()).thenReturn(new ArrayList<>());
@@ -132,9 +124,7 @@ class SpellCastingOutcomeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link SpellCastingOutcomeController#findAllSpellCastingOutcomes(String)}
-     */
+
     @Test
     void testFindAllSpellCastingOutcomes2() throws Exception {
         when(this.spellCastingOutcomeService.findAllSpellCastingOutcome()).thenReturn(new ArrayList<>());
@@ -152,9 +142,7 @@ class SpellCastingOutcomeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link SpellCastingOutcomeController#generateASpellCastingOutcome(Boolean, String)}
-     */
+
     @Test
     void testGenerateASpellCastingOutcome() throws Exception {
         SpellCastingOutcome spellCastingOutcome = new SpellCastingOutcome();
@@ -179,9 +167,7 @@ class SpellCastingOutcomeControllerTest {
                                 "{\"id\":null,\"description\":null,\"spellWasASuccess\":null,\"hasARandomAdditionalEffect\":null,\"icon\":null}"));
     }
 
-    /**
-     * Method under test: {@link SpellCastingOutcomeController#generateASpellCastingOutcome(Boolean, String)}
-     */
+
     @Test
     void testGenerateASpellCastingOutcome2() throws Exception {
         SpellCastingOutcome spellCastingOutcome = new SpellCastingOutcome();
@@ -207,9 +193,7 @@ class SpellCastingOutcomeControllerTest {
                                 "{\"id\":null,\"description\":null,\"spellWasASuccess\":null,\"hasARandomAdditionalEffect\":null,\"icon\":null}"));
     }
 
-    /**
-     * Method under test: {@link SpellCastingOutcomeController#getASpellCastingOutcomeById(Integer, String)}
-     */
+
     @Test
     void testGetASpellCastingOutcomeById() throws Exception {
         SpellCastingOutcome spellCastingOutcome = new SpellCastingOutcome();
@@ -233,9 +217,7 @@ class SpellCastingOutcomeControllerTest {
                                 "{\"id\":null,\"description\":null,\"spellWasASuccess\":null,\"hasARandomAdditionalEffect\":null,\"icon\":null}"));
     }
 
-    /**
-     * Method under test: {@link SpellCastingOutcomeController#getASpellCastingOutcomeById(Integer, String)}
-     */
+
     @Test
     void testGetASpellCastingOutcomeById2() throws Exception {
         SpellCastingOutcome spellCastingOutcome = new SpellCastingOutcome();

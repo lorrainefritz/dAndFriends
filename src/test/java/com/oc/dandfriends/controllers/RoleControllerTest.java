@@ -38,9 +38,7 @@ class RoleControllerTest {
     @MockBean
     private RoleService roleService;
 
-    /**
-     * Method under test: {@link RoleController#addARole(RoleDto, org.springframework.validation.BindingResult, String)}
-     */
+
     @Test
     void testAddARole() throws Exception {
         Role role = new Role();
@@ -71,9 +69,7 @@ class RoleControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"roleName\":\"Role Name\"}"));
     }
 
-    /**
-     * Method under test: {@link RoleController#deleteARole(Integer, String)}
-     */
+
     @Test
     void testDeleteARole() throws Exception {
         doNothing().when(this.roleService).deleteARoleById((Integer) any());
@@ -85,9 +81,7 @@ class RoleControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link RoleController#deleteARole(Integer, String)}
-     */
+
     @Test
     void testDeleteARole2() throws Exception {
         doNothing().when(this.roleService).deleteARoleById((Integer) any());
@@ -100,9 +94,7 @@ class RoleControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link RoleController#findAllRoles(String)}
-     */
+
     @Test
     void testFindAllRoles() throws Exception {
         when(this.roleService.findAllRole()).thenReturn(new ArrayList<>());
@@ -117,9 +109,7 @@ class RoleControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link RoleController#findAllRoles(String)}
-     */
+
     @Test
     void testFindAllRoles2() throws Exception {
         when(this.roleService.findAllRole()).thenReturn(new ArrayList<>());
@@ -135,9 +125,7 @@ class RoleControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
-    /**
-     * Method under test: {@link RoleController#getARoleById(Integer, String)}
-     */
+
     @Test
     void testGetARoleById() throws Exception {
         Role role = new Role();
@@ -156,9 +144,7 @@ class RoleControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":null,\"roleName\":null}"));
     }
 
-    /**
-     * Method under test: {@link RoleController#getARoleById(Integer, String)}
-     */
+
     @Test
     void testGetARoleById2() throws Exception {
         Role role = new Role();
