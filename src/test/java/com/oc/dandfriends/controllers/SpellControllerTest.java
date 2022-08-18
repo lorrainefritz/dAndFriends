@@ -86,7 +86,6 @@ class SpellControllerTest {
     private TokenUtil tokenUtil;
 
 
-
     @Test
     void testDeleteASpellById() throws Exception {
         when(this.tokenUtil.checkTokenAndRetrieveUsernameFromIt((String) any())).thenReturn("janedoe");
@@ -139,9 +138,7 @@ class SpellControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 
-    /**
-     * Method under test: {@link SpellController#deleteASpellById(Integer, String)}
-     */
+
     @Test
     void testDeleteASpellById3() throws Exception {
         when(this.tokenUtil.checkTokenAndRetrieveUsernameFromIt((String) any())).thenReturn("janedoe");
@@ -198,98 +195,6 @@ class SpellControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
-    }
-
-
-    @Test
-    void testSaveASpell() throws Exception {
-        CustomTypeOfSpell customTypeOfSpell = new CustomTypeOfSpell();
-        customTypeOfSpell.setCustomTypeOfSpellName("Custom Type Of Spell Name");
-        customTypeOfSpell.setIcon("Icon");
-        customTypeOfSpell.setId(1);
-
-        Spell spell = new Spell();
-        spell.setCastingTime("Casting Time");
-        spell.setCharacterClasses(new ArrayList<>());
-        spell.setComponentOfSpells(new ArrayList<>());
-        spell.setCustomTypeOfSpell(customTypeOfSpell);
-        spell.setDuration("Duration");
-        spell.setFullDescription("Full Description");
-        spell.setIcon("Icon");
-        spell.setId(1);
-        spell.setLevel(1);
-        spell.setRange("Range");
-        spell.setSavingThrow("Saving Throw");
-        spell.setSchool(School.ABJURATION);
-        spell.setShortDescription("Short Description");
-        spell.setSpellResistance(true);
-        spell.setTarget("Target");
-        spell.setTitle("Dr");
-        when(this.spellService.saveASpell((Spell) any())).thenReturn(spell);
-
-        CustomTypeOfSpell customTypeOfSpell1 = new CustomTypeOfSpell();
-        customTypeOfSpell1.setCustomTypeOfSpellName("Custom Type Of Spell Name");
-        customTypeOfSpell1.setIcon("Icon");
-        customTypeOfSpell1.setId(1);
-
-        Spell spell1 = new Spell();
-        spell1.setCastingTime("Casting Time");
-        spell1.setCharacterClasses(new ArrayList<>());
-        spell1.setComponentOfSpells(new ArrayList<>());
-        spell1.setCustomTypeOfSpell(customTypeOfSpell1);
-        spell1.setDuration("Duration");
-        spell1.setFullDescription("Full Description");
-        spell1.setIcon("Icon");
-        spell1.setId(1);
-        spell1.setLevel(1);
-        spell1.setRange("Range");
-        spell1.setSavingThrow("Saving Throw");
-        spell1.setSchool(School.ABJURATION);
-        spell1.setShortDescription("Short Description");
-        spell1.setSpellResistance(true);
-        spell1.setTarget("Target");
-        spell1.setTitle("Dr");
-        when(this.spellFullDescriptionDtoMapper.spellFullDescriptionDtoToSpell((SpellFullDescriptionDto) any()))
-                .thenReturn(spell1);
-
-        CustomTypeOfSpell customTypeOfSpell2 = new CustomTypeOfSpell();
-        customTypeOfSpell2.setCustomTypeOfSpellName("Custom Type Of Spell Name");
-        customTypeOfSpell2.setIcon("Icon");
-        customTypeOfSpell2.setId(1);
-        when(this.customTypeOfSpellService.findACustomTypeOfSpellByName((String) any())).thenReturn(customTypeOfSpell2);
-
-        SpellFullDescriptionDto spellFullDescriptionDto = new SpellFullDescriptionDto();
-        spellFullDescriptionDto.setCastingTime("Casting Time");
-        spellFullDescriptionDto.setCharacterClassesNames(new ArrayList<>());
-        spellFullDescriptionDto.setComponentsNames(new ArrayList<>());
-        spellFullDescriptionDto.setCustomTypeOfSpellName("Custom Type Of Spell Name");
-        spellFullDescriptionDto.setDuration("Duration");
-        spellFullDescriptionDto.setFullDescription("Full Description");
-        spellFullDescriptionDto.setIcon("Icon");
-        spellFullDescriptionDto.setId(1);
-        spellFullDescriptionDto.setLevel(1);
-        spellFullDescriptionDto.setRange("Range");
-        spellFullDescriptionDto.setSavingThrow("Saving Throw");
-        spellFullDescriptionDto.setSchool("School");
-        spellFullDescriptionDto.setShortDescription("Short Description");
-        spellFullDescriptionDto.setSpellResistance(true);
-        spellFullDescriptionDto.setTarget("Target");
-        spellFullDescriptionDto.setTitle("Dr");
-        String content = (new ObjectMapper()).writeValueAsString(spellFullDescriptionDto);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/spells/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.spellController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string(
-                                "{\"id\":1,\"title\":\"Dr\",\"customTypeOfSpellName\":\"Custom Type Of Spell Name\",\"school\":\"School\",\"level\":1"
-                                        + ",\"componentsNames\":[],\"characterClassesNames\":[],\"castingTime\":\"Casting Time\",\"range\":\"Range\",\"target"
-                                        + "\":\"Target\",\"duration\":\"Duration\",\"savingThrow\":\"Saving Throw\",\"spellResistance\":true,\"shortDescription"
-                                        + "\":\"Short Description\",\"fullDescription\":\"Full Description\",\"icon\":\"Icon\"}"));
     }
 
 
@@ -410,6 +315,59 @@ class SpellControllerTest {
                                 "{\"id\":null,\"title\":null,\"customTypeOfSpellName\":null,\"school\":null,\"level\":0,\"componentsNames\":null,"
                                         + "\"characterClassesNames\":null,\"castingTime\":null,\"range\":null,\"target\":null,\"duration\":null,\"savingThrow"
                                         + "\":null,\"spellResistance\":false,\"shortDescription\":null,\"fullDescription\":null,\"icon\":null}"));
+    }
+
+
+    @Test
+    void testSaveASpell() throws Exception {
+        when(this.tokenUtil.checkTokenAndRetrieveUsernameFromIt((String) any())).thenReturn("janedoe");
+
+        Role role = new Role();
+        role.setAppUsers(new ArrayList<>());
+        role.setId(1);
+        role.setRoleName("Role Name");
+
+        AppUser appUser = new AppUser();
+        appUser.setId(1);
+        appUser.setPassword("iloveyou");
+        appUser.setPseudo("Pseudo");
+        appUser.setRole(role);
+        appUser.setUsername("janedoe");
+        when(this.appUserService.findAnAppUserByName((String) any())).thenReturn(appUser);
+
+        SpellFullDescriptionDto spellFullDescriptionDto = new SpellFullDescriptionDto();
+        spellFullDescriptionDto.setCastingTime("Casting Time");
+        spellFullDescriptionDto.setCharacterClassesNames(new ArrayList<>());
+        spellFullDescriptionDto.setComponentsNames(new ArrayList<>());
+        spellFullDescriptionDto.setCustomTypeOfSpellName("Custom Type Of Spell Name");
+        spellFullDescriptionDto.setDuration("Duration");
+        spellFullDescriptionDto.setFullDescription("Full Description");
+        spellFullDescriptionDto.setIcon("Icon");
+        spellFullDescriptionDto.setId(1);
+        spellFullDescriptionDto.setLevel(1);
+        spellFullDescriptionDto.setRange("Range");
+        spellFullDescriptionDto.setSavingThrow("Saving Throw");
+        spellFullDescriptionDto.setSchool("School");
+        spellFullDescriptionDto.setShortDescription("Short Description");
+        spellFullDescriptionDto.setSpellResistance(true);
+        spellFullDescriptionDto.setTarget("Target");
+        spellFullDescriptionDto.setTitle("Dr");
+        String content = (new ObjectMapper()).writeValueAsString(spellFullDescriptionDto);
+        MockHttpServletRequestBuilder postResult = MockMvcRequestBuilders.post("/spells/add");
+        MockHttpServletRequestBuilder requestBuilder = postResult.cookie(new Cookie("tokenDandFriends", "ABC123"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.spellController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isForbidden())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"id\":1,\"title\":\"Dr\",\"customTypeOfSpellName\":\"Custom Type Of Spell Name\",\"school\":\"School\",\"level\":1"
+                                        + ",\"componentsNames\":[],\"characterClassesNames\":[],\"castingTime\":\"Casting Time\",\"range\":\"Range\",\"target"
+                                        + "\":\"Target\",\"duration\":\"Duration\",\"savingThrow\":\"Saving Throw\",\"spellResistance\":true,\"shortDescription"
+                                        + "\":\"Short Description\",\"fullDescription\":\"Full Description\",\"icon\":\"Icon\"}"));
     }
 }
 

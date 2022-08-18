@@ -62,12 +62,20 @@ public class SpellController {
 
 
     @PostMapping(value = "/spells/add")
-    public ResponseEntity<SpellFullDescriptionDto> saveASpell(@RequestBody @Validated SpellFullDescriptionDto spellDto, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<SpellFullDescriptionDto> saveASpell(@CookieValue(value = "tokenDandFriends") String token,@RequestBody @Validated SpellFullDescriptionDto spellDto, BindingResult bindingResult) throws Exception {
         log.info("HTTP POST request received at /spells with saveASpell");
         if (spellDto == null) {
             log.info("HTTP POST request received at /spells with saveASpell where SpellDto is null");
             return new ResponseEntity<>(spellDto, HttpStatus.NO_CONTENT);
-        } else if (bindingResult.hasErrors()) {
+        }
+        String username = tokenUtil.checkTokenAndRetrieveUsernameFromIt(token);
+        AppUser appUser = appUserService.findAnAppUserByName(username);
+        String role = appUser.getRole().getRoleName();
+        if (!role.equals("ROLE_MJ")) {
+            log.info("HTTP DELETE request received at /spells/delete/id where user has not role MJ" + appUser.getRole().getRoleName());
+            return new ResponseEntity<>(spellDto, HttpStatus.FORBIDDEN);
+        }
+        else if (bindingResult.hasErrors()) {
             log.info("HTTP POST request received at /spells with saveASpell where spellDto is not valid");
             return new ResponseEntity<>(spellDto, HttpStatus.FORBIDDEN);
         } else {
