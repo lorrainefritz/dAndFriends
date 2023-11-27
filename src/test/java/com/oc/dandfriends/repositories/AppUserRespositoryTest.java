@@ -2,7 +2,7 @@ package com.oc.dandfriends.repositories;
 
 import com.oc.dandfriends.entities.AppUser;
 import com.oc.dandfriends.entities.Role;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,7 +14,7 @@ public class AppUserRespositoryTest {
     @Autowired
     private AppUserRepository appUserRepositoryUnderTest;
 
-    @After
+    @AfterEach
     void tearDown() {
         appUserRepositoryUnderTest.deleteAll();
     }

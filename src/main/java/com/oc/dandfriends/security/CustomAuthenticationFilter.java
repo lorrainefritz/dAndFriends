@@ -33,7 +33,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
             log.info("in CustomAuthenticationFilter in doFilterInternal");
 
             try {
-                String token = getCookieValue(request, "jwtToken");
+                String token = getCookieValue(request, "tokenDandFriends");
                 if (token!=null) {
                     log.info("in CustomAuthenticationFilter in doFilterInternal in jwt token is not null");
 
@@ -55,11 +55,28 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getCookieValue(HttpServletRequest request, String cookieName) {
-        return Arrays.stream(request.getCookies())
+        log.info("in CustomAuthenticationFilter in getCookieValue");
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null || cookies.length == 0) {
+            log.info("in CustomAuthenticationFilter in getCookieValue: cookies are null or empty");
+            return null;
+        }
+
+        // Log all cookies
+        for(Cookie cookie : cookies) {
+            log.info("in CustomAuthenticationFilter in getCookieValue: Cookie name: {} and value: {}", cookie.getName(), cookie.getValue());
+        }
+
+        // Retrieve the desired cookie's value
+        String value = Arrays.stream(cookies)
                 .filter(c -> c.getName().equals(cookieName))
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElse(null);
+
+        log.info("in CustomAuthenticationFilter in getCookieValue: Retrieved cookie {} with value: {}", cookieName, value);
+        return value;
     }
 
 }

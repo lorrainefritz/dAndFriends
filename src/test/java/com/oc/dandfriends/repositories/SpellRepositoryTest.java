@@ -5,7 +5,7 @@ import com.oc.dandfriends.entities.ComponentOfSpell;
 import com.oc.dandfriends.entities.CustomTypeOfSpell;
 import com.oc.dandfriends.entities.Spell;
 import com.oc.dandfriends.enums.School;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
@@ -43,7 +43,7 @@ public class SpellRepositoryTest {
     ComponentOfSpellRepository componentOfSpellRepository;
 
 
-    @After
+    @AfterEach
     void tearDown() {
         spellRepositoryUnderTest.deleteAll();
         customTypeOfSpellRepository.deleteAll();
