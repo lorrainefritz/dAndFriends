@@ -15,7 +15,8 @@ public class SpellShortDescriptionDto {
 
     private Integer id;
     private String title;
-    private String shortDescription;
+    private String customTypeOfSpellName;
+    private  String shortDescription;
     private String icon;
 
 }

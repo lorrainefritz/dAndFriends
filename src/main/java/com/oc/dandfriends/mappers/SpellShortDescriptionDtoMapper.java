@@ -16,6 +16,7 @@ public interface SpellShortDescriptionDtoMapper {
         @Mappings({
                 @Mapping(source = "spell.id", target = "id"),
                 @Mapping(source = "spell.title", target = "title"),
+                @Mapping(source = "customTypeOfSpell", target = "customTypeOfSpellName"),
                 @Mapping(source = "spell.shortDescription", target = "shortDescription"),
                 @Mapping(source = "spell.icon", target = "icon")
         })
@@ -24,4 +25,11 @@ public interface SpellShortDescriptionDtoMapper {
         List<Spell> spellsShortDescriptionDtoToSpells(List<SpellShortDescriptionDto> spellsShortDescriptionDto);
         List<SpellShortDescriptionDto> spellsToSpellsShortDescriptionDto(List<Spell> spells);
 
-    }
+
+        default String mapCustomTypeOfSpellToString(CustomTypeOfSpell customTypeOfSpell) {
+                return customTypeOfSpell.getCustomTypeOfSpellName();
+        }
+        CustomTypeOfSpell customTypeOfSpelFromString(String customTypeOfSpell);
+
+
+}
